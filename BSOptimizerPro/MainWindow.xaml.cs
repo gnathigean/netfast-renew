@@ -17,6 +17,7 @@ namespace BSOptimizerPro
         private readonly GameService _gameService = new GameService();
         private readonly SnapTapService _snapTap = new SnapTapService();
         private readonly TurboLoadService _turboService = new TurboLoadService();
+        private readonly ScalingService _scalingService = new ScalingService();
         private OverlayWindow _overlay;
 
         public MainWindow(int userId, string username, int days)
@@ -132,6 +133,27 @@ namespace BSOptimizerPro
         {
             _privacyService.StopSpyware();
             MessageBox.Show("Telemetria do Windows desativada.");
+        }
+
+        // --- UPSCALING & FRAME GEN ---
+        private void ActivateScaling_Click(object sender, RoutedEventArgs e)
+        {
+            // Detectar escala escolhida no ComboBox
+            double scale = 1.3;
+            if (ComboScaleMode.SelectedIndex == 1) scale = 1.5;
+            else if (ComboScaleMode.SelectedIndex == 2) scale = 2.0;
+
+            _scalingService.StartScaling("BloodStrike", scale);
+        }
+
+        private void ToggleFrameGen_Click(object sender, RoutedEventArgs e)
+        {
+            bool isActive = BtnFrameGen.IsChecked == true;
+            _scalingService.ToggleFrameGeneration(isActive);
+            BtnFrameGen.Content = isActive ? "ON" : "OFF";
+            
+            if (isActive)
+                MessageBox.Show("Frame Gen (Beta) ativado. A imagem será interpolada para maior suavidade.", "Netfast Pro");
         }
 
         private void ResetSystem_Click(object sender, RoutedEventArgs e)

@@ -21,6 +21,7 @@
                         <RadioButton x:Name="TabDash" Content="Principal" Style="{StaticResource {x:Type ToggleButton}}" IsChecked="True" Foreground="White" BorderThickness="0" Background="Transparent" Margin="0,5"/>
                         <RadioButton x:Name="TabPerf" Content="Performance" Style="{StaticResource {x:Type ToggleButton}}" Foreground="White" BorderThickness="0" Background="Transparent" Margin="0,5"/>
                         <RadioButton x:Name="TabNet" Content="Rede &amp; Áudio" Style="{StaticResource {x:Type ToggleButton}}" Foreground="White" BorderThickness="0" Background="Transparent" Margin="0,5"/>
+                        <RadioButton x:Name="TabScale" Content="Upscaling/FSR" Style="{StaticResource {x:Type ToggleButton}}" Foreground="White" BorderThickness="0" Background="Transparent" Margin="0,5"/>
                         <RadioButton x:Name="TabSys" Content="Sistema &amp; SOCD" Style="{StaticResource {x:Type ToggleButton}}" Foreground="White" BorderThickness="0" Background="Transparent" Margin="0,5"/>
                     </StackPanel>
 
@@ -86,6 +87,32 @@
                             <TextBlock Text="Áudio Espacial de Baixa Latência" FontWeight="Bold" Foreground="{StaticResource SecondaryBrush}"/>
                             <TextBlock Text="Aumenta a precisão de passos e reduz o delay do som." Foreground="{StaticResource FadedTextBrush}" TextWrapping="Wrap" Margin="0,5,0,15"/>
                             <Button Content="ATIVAR ÁUDIO ELITE" Style="{StaticResource PremiumButtonStyle}" Click="ApplyAudio_Click"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- Upscaling Section -->
+                <StackPanel Visibility="{Binding IsChecked, ElementName=TabScale, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="UPSCALING &amp; FRAME GEN (BETA)" FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,20"/>
+                    <Border Background="{StaticResource CardBrush}" CornerRadius="15" Padding="20" Margin="0,0,0,15">
+                        <StackPanel>
+                            <TextBlock Text="AMD FidelityFX FSR 1.0" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}"/>
+                            <TextBlock Text="Rode o jogo em resolução menor e faça o upscale para ganhar FPS sem perder nitidez." Foreground="{StaticResource FadedTextBrush}" TextWrapping="Wrap" Margin="0,5,0,15"/>
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox x:Name="ComboScaleMode" Width="150" Background="#222" Foreground="White">
+                                    <ComboBoxItem Content="Qualidade (1.3x)" IsSelected="True"/>
+                                    <ComboBoxItem Content="Equilibrado (1.5x)"/>
+                                    <ComboBoxItem Content="Performance (2.0x)"/>
+                                </ComboBox>
+                                <Button Content="ATIVAR FSR" Style="{StaticResource PremiumButtonStyle}" Width="120" Margin="10,0,0,0" Click="ActivateScaling_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="{StaticResource CardBrush}" CornerRadius="15" Padding="20">
+                        <StackPanel>
+                            <TextBlock Text="Interpolação de Quadros (Frame Gen)" FontWeight="Bold" Foreground="{StaticResource SecondaryBrush}"/>
+                            <TextBlock Text="Dobra visualmente os frames gerando quadros interpolados (Exige GPU forte)." Foreground="{StaticResource FadedTextBrush}" TextWrapping="Wrap" Margin="0,5,0,15"/>
+                            <ToggleButton x:Name="BtnFrameGen" Content="OFF" Width="100" Height="40" Click="ToggleFrameGen_Click"/>
                         </StackPanel>
                     </Border>
                 </StackPanel>
