@@ -27,16 +27,34 @@ namespace BSOptimizerPro
             _timer.Interval = TimeSpan.FromSeconds(1.5);
             _timer.Tick += UpdateStats;
             _timer.Start();
+
+            // Permitir arrastar a janela
+            this.MouseLeftButtonDown += (s, e) => this.DragMove();
+        }
+
+        public void SetLocked(bool locked)
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            int extendedStyle = NativeMethods.GetWindowLong(hwnd, NativeMethods.GWL_EXSTYLE);
+
+            if (locked)
+            {
+                // Ativar Click-through
+                NativeMethods.SetWindowLong(hwnd, NativeMethods.GWL_EXSTYLE, extendedStyle | NativeMethods.WS_EX_TRANSPARENT | NativeMethods.WS_EX_LAYERED);
+                this.Opacity = 0.7; // Mais transparente quando travado
+            }
+            else
+            {
+                // Desativar Click-through (Permite interagir e mover)
+                NativeMethods.SetWindowLong(hwnd, NativeMethods.GWL_EXSTYLE, extendedStyle & ~NativeMethods.WS_EX_TRANSPARENT);
+                this.Opacity = 1.0; // Totalmente opaco para visualização clara ao mover
+            }
         }
 
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
-
-            // Tornar a janela Click-through (ignora cliques e foca no jogo)
-            var hwnd = new WindowInteropHelper(this).Handle;
-            int extendedStyle = NativeMethods.GetWindowLong(hwnd, NativeMethods.GWL_EXSTYLE);
-            NativeMethods.SetWindowLong(hwnd, NativeMethods.GWL_EXSTYLE, extendedStyle | NativeMethods.WS_EX_TRANSPARENT | NativeMethods.WS_EX_LAYERED);
+            SetLocked(true); // Começa travado por padrão
         }
 
         private async void UpdateStats(object sender, EventArgs e)

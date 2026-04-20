@@ -7,10 +7,15 @@ namespace BSOptimizerPro.Services
 {
     public class TurboLoadService
     {
+        private readonly MemoryService _memoryService = new MemoryService();
+
         public bool EnableTurboLoad()
         {
             try
             {
+                // Limpeza de Memória Standby (ISLC style)
+                _memoryService.ClearStandbyList();
+
                 // 1. Manter Kernel na RAM (Evita paginação lenta)
                 RegistryHelper.SetRegistryValue(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management", "DisablePagingExecutive", 1, RegistryValueKind.DWord);
 

@@ -12,22 +12,13 @@ namespace BSOptimizerPro.Services
         {
             try
             {
-                string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                string[] possiblePaths = {
-                    Path.Combine(localAppData, "BloodStrike", "Saved", "Config", "WindowsNoEditor"),
-                    Path.Combine(localAppData, "ProjectBlood", "Saved", "Config", "WindowsNoEditor")
-                };
+                string path = PathService.GetBloodStrikeConfigPath();
+                if (string.IsNullOrEmpty(path)) return false;
 
-                foreach (var path in possiblePaths)
+                var iniFiles = Directory.GetFiles(path, "*.ini", SearchOption.AllDirectories);
+                foreach (var file in iniFiles)
                 {
-                    if (Directory.Exists(path))
-                    {
-                        var iniFiles = Directory.GetFiles(path, "GameUserSettings.ini", SearchOption.AllDirectories);
-                        foreach (var file in iniFiles)
-                        {
-                            InjectPotatoConfig(file, extreme);
-                        }
-                    }
+                    InjectPotatoConfig(file, extreme);
                 }
                 return true;
             }
@@ -61,10 +52,55 @@ namespace BSOptimizerPro.Services
             
             // Desativar Fullscreen Optimizations (FSO)
             RegistryHelper.SetRegistryValue(@"HKEY_CURRENT_USER\System\GameConfigStore", "GameDVR_FSEBehavior", 2, RegistryValueKind.DWord);
+
+            // Detecção de GPU e Tweaks Específicos
+            ApplyGPUTweaks();
             
             // Variáveis de Ambiente para Unity/Performance
             Environment.SetEnvironmentVariable("UNITY_DISABLE_HW_STATS", "1", EnvironmentVariableTarget.User);
             Environment.SetEnvironmentVariable("__GL_THREADED_OPTIMIZATIONS", "1", EnvironmentVariableTarget.User);
+        }
+
+        private void ApplyGPUTweaks()
+        {
+            try
+            {
+                // Tweak Global (Independente da GPU)
+                RegistryHelper.SetRegistryValue(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GraphicsDrivers", "HWSchPriority", 1, RegistryValueKind.DWord);
+
+                // Busca por IDs de Driver AMD no Registro
+                using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}"))
+                {
+                    if (key != null)
+                    {
+                        foreach (string subkeyName in key.GetSubKeyNames())
+                        {
+                            if (subkeyName == "0000" || subkeyName == "0001" || subkeyName == "0002")
+                            {
+                                using (RegistryKey subkey = key.OpenSubKey(subkeyName, true))
+                                {
+                                    if (subkey == null) continue;
+                                    
+                                    string provider = subkey.GetValue("ProviderName") as string;
+                                    if (provider != null && provider.Contains("Advanced Micro Devices"))
+                                    {
+                                        // Otimizações Específicas AMD
+                                        subkey.SetValue("FlipQueueSize", new byte[] { 0x31, 0x00 }, RegistryValueKind.Binary); // 0 ou 1 (Anti-Lag)
+                                        subkey.SetValue("ShaderCache", "32", RegistryValueKind.String);
+                                        subkey.SetValue("KMD_EnableCrossFire", 0, RegistryValueKind.DWord);
+                                    }
+                                    else if (provider != null && provider.Contains("NVIDIA"))
+                                    {
+                                        // NVIDIA já é coberta pelo TurboLoadService via NVTweak, 
+                                        // mas podemos adicionar ajustes globais de latência aqui se necessário.
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch { }
         }
     }
 }

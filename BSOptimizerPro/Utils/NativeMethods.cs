@@ -58,5 +58,12 @@ namespace BSOptimizerPro.Utils
 
         [DllImport("user32.dll")]
         public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        // --- Para Limpeza de Memória Standby ---
+        [DllImport("ntdll.dll", SetLastError = true)]
+        public static extern int NtSetSystemInformation(int systemInformationClass, IntPtr systemInformation, int systemInformationLength);
+
+        public const int SystemMemoryListInformation = 0x0050;
+        public const int MemoryPurgeStandbyList = 4;
     }
 }

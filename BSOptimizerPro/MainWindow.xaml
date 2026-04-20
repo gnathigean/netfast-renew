@@ -108,11 +108,17 @@
                                 <TextBlock Text="Overlay HUD (Monitoramento)" FontWeight="Bold" Foreground="{StaticResource SecondaryBrush}"/>
                                 <TextBlock Text="Mostra CPU, GPU e Ping em tempo real na tela do jogo." Foreground="{StaticResource FadedTextBrush}" TextWrapping="Wrap"/>
                             </StackPanel>
-                            <ToggleButton x:Name="BtnOverlay" Content="OFF" Width="60" Height="30" Click="ToggleOverlay_Click"/>
+                            <StackPanel Orientation="Horizontal">
+                                <ToggleButton x:Name="BtnLockOverlay" Content="🔓" Width="40" Height="30" Margin="0,0,5,0" Click="BtnLockOverlay_Click" ToolTip="Destravar para mover"/>
+                                <ToggleButton x:Name="BtnOverlay" Content="OFF" Width="60" Height="30" Click="ToggleOverlay_Click"/>
+                            </StackPanel>
                         </StackPanel>
                     </Border>
                     <Border Background="{StaticResource CardBrush}" CornerRadius="15" Padding="20">
                         <StackPanel>
+                            <TextBlock Text="Status do Hardware" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}"/>
+                            <TextBlock x:Name="HardwareInfo" Text="Detectando GPU..." Foreground="{StaticResource FadedTextBrush}" FontSize="12" Margin="0,5"/>
+                            <Separator Background="#333" Margin="0,10"/>
                             <TextBlock Text="Segurança &amp; Privacidade" FontWeight="Bold" Foreground="#facc15"/>
                             <CheckBox x:Name="ChkTelemetry" Content="Desativar Telemetria (Anti-Spyware)" Foreground="White" IsChecked="True" Margin="0,10"/>
                             <Button Content="APLICAR PRIVACIDADE" Style="{StaticResource PremiumButtonStyle}" Background="#facc15" Foreground="Black" Click="ApplyPrivacy_Click"/>

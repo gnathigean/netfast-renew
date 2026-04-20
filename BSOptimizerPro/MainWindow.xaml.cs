@@ -28,6 +28,27 @@ namespace BSOptimizerPro
 
             UserGreet.Text = $"Olá, {_username}";
             LicenseInfo.Text = $"VIP: {_daysRemaining} Dias restantes";
+
+            DetectHardware();
+        }
+
+        private void DetectHardware()
+        {
+            try
+            {
+                string gpu = "Desconhecida";
+                using (var searcher = new System.Management.ManagementObjectSearcher("Select * from Win32_VideoController"))
+                {
+                    foreach (var obj in searcher.Get())
+                    {
+                        gpu = obj["Name"].ToString();
+                        break;
+                    }
+                }
+                string path = PathService.GetBloodStrikeConfigPath() != null ? "DETECTADO" : "NÃO ENCONTRADO";
+                HardwareInfo.Text = $"GPU: {gpu}\nBLOOD STRIKE: {path}";
+            }
+            catch { HardwareInfo.Text = "Hardware: Falha na detecção"; }
         }
 
         // --- DASHBOARD ---
@@ -96,6 +117,15 @@ namespace BSOptimizerPro
                 _overlay?.Close();
                 BtnOverlay.Content = "OFF";
             }
+        }
+
+        private void BtnLockOverlay_Click(object sender, RoutedEventArgs e)
+        {
+            if (_overlay == null) return;
+            
+            bool isLocked = BtnLockOverlay.IsChecked == false; // Se não tá checado, tá travado (🔓) 
+            _overlay.SetLocked(isLocked);
+            BtnLockOverlay.Content = isLocked ? "🔓" : "🔒";
         }
 
         private void ApplyPrivacy_Click(object sender, RoutedEventArgs e)
