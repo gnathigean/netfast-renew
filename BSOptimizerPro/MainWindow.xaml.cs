@@ -16,6 +16,8 @@ namespace BSOptimizerPro
         private readonly PrivacyService _privacyService = new PrivacyService();
         private readonly GameService _gameService = new GameService();
         private readonly SnapTapService _snapTap = new SnapTapService();
+        private readonly TurboLoadService _turboService = new TurboLoadService();
+        private OverlayWindow _overlay;
 
         public MainWindow(int userId, string username, int days)
         {
@@ -43,7 +45,8 @@ namespace BSOptimizerPro
         {
             if (ChkFpsTurbo.IsChecked == true) _gameService.ApplyEngineTweaks();
             if (ChkPotato.IsChecked == true) _gameService.ApplyPotatoMode(true);
-            MessageBox.Show("Otimizações de performance e gráficos aplicadas!", "Game Boost");
+            if (ChkTurboLoad.IsChecked == true) _turboService.EnableTurboLoad();
+            MessageBox.Show("Otimizações de performance, gráficos e carregamento turbo aplicadas!", "Elite Boost");
         }
 
         private void ApplyEngine_Click(object sender, RoutedEventArgs e)
@@ -77,6 +80,21 @@ namespace BSOptimizerPro
             {
                 _snapTap.Stop();
                 BtnSnapTap.Content = "OFF";
+            }
+        }
+
+        private void ToggleOverlay_Click(object sender, RoutedEventArgs e)
+        {
+            if (BtnOverlay.IsChecked == true)
+            {
+                _overlay = new OverlayWindow();
+                _overlay.Show();
+                BtnOverlay.Content = "ON";
+            }
+            else
+            {
+                _overlay?.Close();
+                BtnOverlay.Content = "OFF";
             }
         }
 

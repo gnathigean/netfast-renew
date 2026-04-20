@@ -56,6 +56,7 @@
                                 <TextBlock Text="FPS Turbo" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}"/>
                                 <CheckBox x:Name="ChkFpsTurbo" Content="Desbloquear FPS" Foreground="White" IsChecked="True" Margin="0,10"/>
                                 <CheckBox x:Name="ChkPotato" Content="Modo Batata (Ultra-Low)" Foreground="White" Margin="0,5"/>
+                                <CheckBox x:Name="ChkTurboLoad" Content="Carregamento Turbo (Mapas 2s)" Foreground="{StaticResource SecondaryBrush}" FontWeight="Bold" Margin="0,5"/>
                                 <Button Content="APLICAR" Style="{StaticResource PremiumButtonStyle}" Height="30" Margin="0,10,0,0" Click="ApplyPerf_Click"/>
                             </StackPanel>
                         </Border>
@@ -99,6 +100,15 @@
                                 <TextBlock Text="Movimentação instantânea A/D. Risco de banimento." Foreground="{StaticResource FadedTextBrush}" TextWrapping="Wrap"/>
                             </StackPanel>
                             <ToggleButton x:Name="BtnSnapTap" Content="OFF" Width="60" Height="30" Click="ToggleSnapTap_Click"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="{StaticResource CardBrush}" CornerRadius="15" Padding="20" Margin="0,0,0,15">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="SpaceBetween">
+                            <StackPanel Width="450">
+                                <TextBlock Text="Overlay HUD (Monitoramento)" FontWeight="Bold" Foreground="{StaticResource SecondaryBrush}"/>
+                                <TextBlock Text="Mostra CPU, GPU e Ping em tempo real na tela do jogo." Foreground="{StaticResource FadedTextBrush}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                            <ToggleButton x:Name="BtnOverlay" Content="OFF" Width="60" Height="30" Click="ToggleOverlay_Click"/>
                         </StackPanel>
                     </Border>
                     <Border Background="{StaticResource CardBrush}" CornerRadius="15" Padding="20">
