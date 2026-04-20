@@ -58,7 +58,8 @@
                                 <CheckBox x:Name="ChkFpsTurbo" Content="Desbloquear FPS" Foreground="White" IsChecked="True" Margin="0,10"/>
                                 <CheckBox x:Name="ChkPotato" Content="Modo Batata (Ultra-Low)" Foreground="White" Margin="0,5"/>
                                 <CheckBox x:Name="ChkTurboLoad" Content="Carregamento Turbo (Mapas 2s)" Foreground="{StaticResource SecondaryBrush}" FontWeight="Bold" Margin="0,5"/>
-                                <Button Content="APLICAR" Style="{StaticResource PremiumButtonStyle}" Height="30" Margin="0,10,0,0" Click="ApplyPerf_Click"/>
+                                <Button Content="APLICAR" Style="{StaticResource PremiumButtonStyle}" Height="30" Margin="0,10,0,5" Click="ApplyPerf_Click"/>
+                                <Button Content="PERSONALIZAR BLOOD STRIKE" Background="#facc15" Foreground="Black" BorderThickness="0" Height="25" Click="OpenCustomizer_Click"/>
                             </StackPanel>
                         </Border>
                         <Border Margin="5" Background="{StaticResource CardBrush}" CornerRadius="12" Padding="15">
@@ -77,9 +78,25 @@
                     <TextBlock Text="REDE &amp; ÁUDIO COMPETITIVO" FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,20"/>
                     <Border Background="{StaticResource CardBrush}" CornerRadius="15" Padding="20" Margin="0,0,0,20">
                         <StackPanel>
-                            <TextBlock Text="Otimização de Latência (PING)" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}"/>
-                            <TextBlock Text="Reseta protocolos TCP/IP e DNS para garantir a melhor rota." Foreground="{StaticResource FadedTextBrush}" TextWrapping="Wrap" Margin="0,5,0,15"/>
-                            <Button Content="OTIMIZAR ROTA DE REDE" Style="{StaticResource PremiumButtonStyle}" Click="ApplyNetwork_Click"/>
+                            <TextBlock Text="Otimização de Latência (PING) e Rota" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}"/>
+                            <TextBlock Text="Reseta protocolos, limpa DNS e aplica TCP otimizado para o jogo." Foreground="{StaticResource FadedTextBrush}" TextWrapping="Wrap" Margin="0,5,0,15"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="OTIMIZAR ROTA" Style="{StaticResource PremiumButtonStyle}" Width="150" Click="ApplyNetwork_Click"/>
+                                <TextBlock x:Name="PingResultText" Text="Ping: -- ms" Foreground="White" VerticalAlignment="Center" Margin="15,0,0,0" FontWeight="Bold"/>
+                            </StackPanel>
+                            
+                            <Separator Background="#333" Margin="0,15"/>
+                            <TextBlock Text="Seletor de DNS (Recomendado)" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}"/>
+                            <TextBlock Text="Escolha um servidor DNS para diminuir a rota para o servidor." Foreground="{StaticResource FadedTextBrush}" FontSize="12" Margin="0,2,0,10"/>
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox x:Name="ComboDns" Width="200" Background="#222" Foreground="White">
+                                    <ComboBoxItem Content="Google (8.8.8.8)" Tag="8.8.8.8|8.8.4.4" IsSelected="True"/>
+                                    <ComboBoxItem Content="Cloudflare (1.1.1.1)" Tag="1.1.1.1|1.0.0.1"/>
+                                    <ComboBoxItem Content="Quad9 (9.9.9.9)" Tag="9.9.9.9|149.112.112.112"/>
+                                    <ComboBoxItem Content="Padrão (Automático)" Tag="auto|auto"/>
+                                </ComboBox>
+                                <Button Content="APLICAR DNS" Style="{StaticResource PremiumButtonStyle}" Background="#3b82f6" Foreground="White" Width="100" Margin="10,0,0,0" Click="ApplyDns_Click"/>
+                            </StackPanel>
                         </StackPanel>
                     </Border>
                     <Border Background="{StaticResource CardBrush}" CornerRadius="15" Padding="20">
@@ -143,15 +160,28 @@
                     </Border>
                     <Border Background="{StaticResource CardBrush}" CornerRadius="15" Padding="20">
                         <StackPanel>
-                            <TextBlock Text="Status do Hardware" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}"/>
-                            <TextBlock x:Name="HardwareInfo" Text="Detectando GPU..." Foreground="{StaticResource FadedTextBrush}" FontSize="12" Margin="0,5"/>
+                            <TextBlock Text="Ajustes de Sistema Elite" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}"/>
+                            <CheckBox x:Name="ChkTimerRes" Content="Timer Resolution 0.5ms (Low Latency)" Foreground="White" Margin="0,10"/>
+                            <CheckBox x:Name="ChkAutoCleanup" Content="Limpeza Inteligente Automática ao Otimizar" Foreground="White" Margin="0,5"/>
+                            
                             <Separator Background="#333" Margin="0,10"/>
                             <TextBlock Text="Segurança &amp; Privacidade" FontWeight="Bold" Foreground="#facc15"/>
                             <CheckBox x:Name="ChkTelemetry" Content="Desativar Telemetria (Anti-Spyware)" Foreground="White" IsChecked="True" Margin="0,10"/>
-                            <Button Content="APLICAR PRIVACIDADE" Style="{StaticResource PremiumButtonStyle}" Background="#facc15" Foreground="Black" Click="ApplyPrivacy_Click"/>
+                            <Button Content="APLICAR AJUSTES DE SISTEMA" Style="{StaticResource PremiumButtonStyle}" Background="#facc15" Foreground="Black" Click="ApplyPrivacy_Click"/>
                         </StackPanel>
                     </Border>
-                    <Button Content="RESTAURAR PADRÕES DO WINDOWS (RESET TOTAL)" Background="Transparent" Foreground="#555" BorderThickness="0" Margin="0,20,0,0" Click="ResetSystem_Click"/>
+                    <Grid Margin="0,15,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="RESTAURAR PADRÕES DO WINDOWS (RESET TOTAL)" Background="Transparent" Foreground="#555" BorderThickness="0" HorizontalAlignment="Left" Click="ResetSystem_Click"/>
+                        
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <TextBlock Text="Mira (Crosshair):" Foreground="White" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <ToggleButton x:Name="BtnCrosshair" Content="OFF" Width="50" Height="25" Click="ToggleCrosshair_Click"/>
+                        </StackPanel>
+                    </Grid>
                 </StackPanel>
             </Grid>
 

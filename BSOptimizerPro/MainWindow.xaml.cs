@@ -18,7 +18,12 @@ namespace BSOptimizerPro
         private readonly SnapTapService _snapTap = new SnapTapService();
         private readonly TurboLoadService _turboService = new TurboLoadService();
         private readonly ScalingService _scalingService = new ScalingService();
+        private readonly NetworkService _networkService = new NetworkService();
+        private readonly TimerService _timerService = new TimerService();
+        private readonly CleanupService _cleanupService = new CleanupService();
+        
         private OverlayWindow _overlay;
+        private CrosshairWindow _crosshair;
 
         public MainWindow(int userId, string username, int days)
         {
@@ -77,11 +82,45 @@ namespace BSOptimizerPro
             MessageBox.Show("Tweaks de engine Unreal/Unity aplicados com sucesso.");
         }
 
-        // --- NETWORK & AUDIO ---
-        private void ApplyNetwork_Click(object sender, RoutedEventArgs e)
+        private void OpenCustomizer_Click(object sender, RoutedEventArgs e)
         {
-            _netService.OptimizeNetwork();
-            MessageBox.Show("DNS limpo e roteamento TCP otimizado!");
+            SettingsWindow settings = new SettingsWindow();
+            settings.ShowDialog();
+        }
+
+        // --- NETWORK & AUDIO ---
+        private async void ApplyNetwork_Click(object sender, RoutedEventArgs e)
+        {
+            PingResultText.Text = "Verificando...";
+            if (_networkService.OptimizeNetwork())
+            {
+                int ms = await _networkService.GetPingAsync("8.8.8.8");
+                PingResultText.Text = $"Ping: {ms} ms";
+                MessageBox.Show("Rotas e protocolos de rede resetados! Rota otimizada.", "Network Elite");
+            }
+            else
+            {
+                PingResultText.Text = "Falha!";
+            }
+        }
+
+        private void ApplyDns_Click(object sender, RoutedEventArgs e)
+        {
+            if (ComboDns.SelectedItem is System.Windows.Controls.ComboBoxItem item)
+            {
+                string tag = item.Tag.ToString();
+                if (tag == "auto|auto")
+                {
+                    _networkService.SetDns("dhcp", "");
+                    MessageBox.Show("DNS Restaurado para Padrão (Automático).", "Network Elite");
+                }
+                else
+                {
+                    var ips = tag.Split('|');
+                    _networkService.SetDns(ips[0], ips[1]);
+                    MessageBox.Show($"DNS Alterado para {item.Content}.", "Network Elite");
+                }
+            }
         }
 
         private void ApplyAudio_Click(object sender, RoutedEventArgs e)
@@ -131,8 +170,30 @@ namespace BSOptimizerPro
 
         private void ApplyPrivacy_Click(object sender, RoutedEventArgs e)
         {
-            _privacyService.StopSpyware();
-            MessageBox.Show("Telemetria do Windows desativada.");
+            if (ChkTelemetry.IsChecked == true)
+                _privacyService.StopSpyware();
+                
+            if (ChkTimerRes.IsChecked == true)
+                _timerService.SetHighResolution();
+            else
+                _timerService.ResetResolution();
+
+            MessageBox.Show("Ajustes de sistema, timer e telemetria aplicados com segurança.");
+        }
+
+        private void ToggleCrosshair_Click(object sender, RoutedEventArgs e)
+        {
+            if (BtnCrosshair.IsChecked == true)
+            {
+                _crosshair = new CrosshairWindow();
+                _crosshair.Show();
+                BtnCrosshair.Content = "ON";
+            }
+            else
+            {
+                _crosshair?.Close();
+                BtnCrosshair.Content = "OFF";
+            }
         }
 
         // --- UPSCALING & FRAME GEN ---

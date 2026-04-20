@@ -1,0 +1,82 @@
+<Window x:Class="BSOptimizerPro.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Blood Strike Personalizer" Height="450" Width="700"
+        WindowStartupLocation="CenterScreen" Background="{StaticResource BgBrush}"
+        WindowStyle="None" AllowsTransparency="True">
+
+    <Border CornerRadius="15" BorderBrush="#8b5cf6" BorderThickness="2" Background="{StaticResource BgBrush}">
+        <Grid Margin="20">
+            <StackPanel>
+                <TextBlock Text="PERSONALIZADOR DE GRÁFICOS E ENGINE" FontSize="20" FontWeight="Bold" Foreground="White" Margin="0,0,0,20"/>
+                
+                <UniformGrid Columns="2" Margin="0,0,0,20">
+                    <StackPanel Margin="0,0,10,0">
+                        <TextBlock Text="RESOLUÇÃO (TELA)" Foreground="{StaticResource PrimaryBrush}" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <ComboBox x:Name="ComboRes" Background="#222" Foreground="White">
+                            <ComboBoxItem Content="1920 X 1080 (Padrão)"/>
+                            <ComboBoxItem Content="1600 X 900"/>
+                            <ComboBoxItem Content="2560 X 1440 (2K)"/>
+                            <ComboBoxItem Content="1280 X 720 (Potato)"/>
+                            <ComboBoxItem Content="1440 X 1080 (Stretched)" IsSelected="True"/>
+                        </ComboBox>
+                    </StackPanel>
+                    
+                    <StackPanel Margin="10,0,0,0">
+                        <TextBlock Text="REFRESH RATE (HZ)" Foreground="{StaticResource SecondaryBrush}" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <ComboBox x:Name="ComboHz" Background="#222" Foreground="White">
+                            <ComboBoxItem Content="60 HZ"/>
+                            <ComboBoxItem Content="144 HZ"/>
+                            <ComboBoxItem Content="240 HZ" IsSelected="True"/>
+                            <ComboBoxItem Content="360 HZ"/>
+                            <ComboBoxItem Content="Ilimitado"/>
+                        </ComboBox>
+                    </StackPanel>
+                </UniformGrid>
+
+                <TextBlock Text="CONFIGURAÇÕES AVANÇADAS (UNREAL ENGINE)" FontWeight="Bold" Foreground="White" Margin="0,0,0,10"/>
+                <Border Background="{StaticResource CardBrush}" CornerRadius="10" Padding="15">
+                    <UniformGrid Columns="2">
+                        <StackPanel>
+                            <TextBlock Text="TEXTURAS" Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,5"/>
+                            <ComboBox x:Name="ComboTextura" Background="#222" Foreground="White" Margin="0,0,10,10">
+                                <ComboBoxItem Content="Ultrabaixo (Performance)"/>
+                                <ComboBoxItem Content="Médio (Recomendado)" IsSelected="True"/>
+                                <ComboBoxItem Content="Alto"/>
+                            </ComboBox>
+
+                            <CheckBox x:Name="ChkShadows" Content="Sombras Dinâmicas" Foreground="White" Margin="0,5"/>
+                            <CheckBox x:Name="ChkFoliage" Content="Efeitos de Terreno/Grama" Foreground="White" Margin="0,5"/>
+                        </StackPanel>
+                        
+                        <StackPanel Margin="10,0,0,0">
+                            <TextBlock Text="MODO DE EXIBIÇÃO" Foreground="{StaticResource SecondaryBrush}" Margin="0,0,0,5"/>
+                            <ComboBox x:Name="ComboWindow" Background="#222" Foreground="White" Margin="0,0,0,10">
+                                <ComboBoxItem Content="Tela Cheia Exclusiva" IsSelected="True"/>
+                                <ComboBoxItem Content="Livre de Bordas (Borderless)"/>
+                                <ComboBoxItem Content="Janela"/>
+                            </ComboBox>
+
+                            <CheckBox x:Name="ChkVsync" Content="V-Sync (Sincronização Vertical)" Foreground="White" Margin="0,5"/>
+                            <CheckBox x:Name="ChkPostProcess" Content="Pós-Processamento (Anti-Aliasing)" Foreground="White" Margin="0,5"/>
+                        </StackPanel>
+                    </UniformGrid>
+                </Border>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,30,0,0">
+                    <Button Content="FECHAR" Background="Transparent" Foreground="White" BorderThickness="0" Margin="0,0,15,0" Click="Close_Click"/>
+                    <Button Content="PRESET ELITE" Style="{StaticResource PremiumButtonStyle}" Width="150" Margin="0,0,15,0" Click="PresetElite_Click"/>
+                    <Button Content="SALVAR E APLICAR" Background="#00e676" Foreground="Black" FontWeight="Bold" Width="150" Padding="10" Click="Save_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

@@ -65,5 +65,15 @@ namespace BSOptimizerPro.Utils
 
         public const int SystemMemoryListInformation = 0x0050;
         public const int MemoryPurgeStandbyList = 4;
+
+        // --- Para Timer Resolution (Low Latency) ---
+        [DllImport("winmm.dll", EntryPoint = "timeBeginPeriod")]
+        public static extern uint TimeBeginPeriod(uint uPeriod);
+
+        [DllImport("winmm.dll", EntryPoint = "timeEndPeriod")]
+        public static extern uint TimeEndPeriod(uint uPeriod);
+
+        [DllImport("ntdll.dll")]
+        public static extern int NtSetTimerResolution(uint DesiredResolution, bool SetResolution, out uint CurrentResolution);
     }
 }
