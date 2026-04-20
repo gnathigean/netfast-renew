@@ -1,0 +1,18 @@
+# .gitignore para .NET/C#
+[Bb]in/
+[Oo]bj/
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Configurações locais
+config_login.json
+.env
+
+# Outros
+*.exe
+*.dll
+*.pdb

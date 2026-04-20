@@ -1,0 +1,58 @@
+<Application x:Class="BSOptimizerPro.App"
+             xmlns="http://schemas.microsoft.com/winfx/2000/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2000/xaml"
+             StartupUri="LoginWindow.xaml">
+    <Application.Resources>
+        <!-- Cores Globais -->
+        <Color x:Key="PrimaryColor">#8b5cf6</Color>
+        <Color x:Key="SecondaryColor">#00e676</Color>
+        <Color x:Key="BgColor">#050508</Color>
+        <Color x:Key="CardBgColor">#0c0c12</Color>
+        <Color x:Key="TextColor">#f8fafc</Color>
+        <Color x:Key="FadedTextColor">#94a3b8</Color>
+
+        <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"/>
+        <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource SecondaryColor}"/>
+        <SolidColorBrush x:Key="BgBrush" Color="{StaticResource BgColor}"/>
+        <SolidColorBrush x:Key="CardBrush" Color="{StaticResource CardBgColor}"/>
+        <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
+        <SolidColorBrush x:Key="FadedTextBrush" Color="{StaticResource FadedTextColor}"/>
+
+        <!-- Estilo de Botão -->
+        <Style x:Key="PremiumButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="10">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Template>
+        </Style>
+
+        <!-- Estilo de TextBox -->
+        <Style x:Key="PremiumTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="{StaticResource CardBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+            <Setter Property="BorderBrush" Value="#1E1E2E"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Template>
+                <ControlTemplate TargetType="TextBox">
+                    <Border Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="10">
+                        <ScrollViewer x:Name="PART_ContentHost"/>
+                    </Border>
+                </ControlTemplate>
+            </Template>
+        </Style>
+    </Application.Resources>
+</Application>

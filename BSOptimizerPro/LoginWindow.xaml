@@ -1,0 +1,58 @@
+<Window x:Class="BSOptimizerPro.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2000/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2000/xaml"
+        Title="BS OPTIMIZER PRO | ELITE ACCESS" Height="650" Width="420"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Background="{StaticResource BgBrush}" WindowStyle="None" AllowsTransparency="True">
+    
+    <Border CornerRadius="20" BorderBrush="{StaticResource PrimaryBrush}" BorderThickness="1" Background="{StaticResource BgBrush}">
+        <Grid Margin="30">
+            <StackPanel x:Name="LoginPanel" VerticalAlignment="Center">
+                <!-- Logo Shorthand (Placeholder for user's logo) -->
+                <TextBlock Text="⚡" FontSize="60" HorizontalAlignment="Center" Foreground="{StaticResource PrimaryBrush}"/>
+                
+                <TextBlock Text="BS OPTIMIZER" FontSize="26" FontWeight="Bold" HorizontalAlignment="Center" 
+                           Foreground="{StaticResource PrimaryBrush}" Margin="0,10,0,5"/>
+                <TextBlock Text="PAINEL DE ACESSO ELITE" FontSize="14" HorizontalAlignment="Center" 
+                           Foreground="{StaticResource FadedTextBrush}" Margin="0,0,0,40"/>
+
+                <TextBlock Text="Nome de Usuário" Foreground="{StaticResource FadedTextBrush}" Margin="5,0,0,8"/>
+                <TextBox x:Name="UsernameBox" Style="{StaticResource PremiumTextBoxStyle}" Margin="0,0,0,20"/>
+
+                <TextBlock Text="Senha de Acesso" Foreground="{StaticResource FadedTextBrush}" Margin="5,0,0,8"/>
+                <PasswordBox x:Name="PasswordBox" Margin="0,0,0,30" Padding="10" Background="{StaticResource CardBrush}" 
+                             Foreground="{StaticResource TextBrush}" BorderBrush="#1E1E2E" BorderThickness="2">
+                    <!-- Note: PasswordBox doesn't support CornerRadius directly in a simple way without a full template, 
+                         but for this demo we'll use a simplified version -->
+                </PasswordBox>
+
+                <Button Content="AUTENTICAR NO SISTEMA" Style="{StaticResource PremiumButtonStyle}" 
+                        Height="50" Click="LoginButton_Click"/>
+                
+                <TextBlock Text="Não tem conta? Crie no site oficial." FontSize="12" HorizontalAlignment="Center" 
+                           Foreground="#555555" Margin="0,20,0,0"/>
+                
+                <Button Content="Sair" Background="Transparent" Foreground="#555555" BorderThickness="0" 
+                        Margin="0,10,0,0" Click="ExitButton_Click"/>
+            </StackPanel>
+
+            <StackPanel x:Name="ActivationPanel" VerticalAlignment="Center" Visibility="Collapsed">
+                <TextBlock Text="🔒 LICENÇA INATIVA" FontSize="26" FontWeight="Bold" HorizontalAlignment="Center" 
+                           Foreground="#ff3a3a" Margin="0,10,0,5"/>
+                <TextBlock Text="Plano expirado ou não encontrado." FontSize="14" HorizontalAlignment="Center" 
+                           Foreground="{StaticResource FadedTextBrush}" Margin="0,0,0,40"/>
+
+                <TextBlock Text="Insira sua Key (16 Dígitos)" Foreground="{StaticResource FadedTextBrush}" Margin="5,0,0,8"/>
+                <TextBox x:Name="KeyBox" Style="{StaticResource PremiumTextBoxStyle}" Margin="0,0,0,20" 
+                         FontFamily="Consolas" TextAlignment="Center"/>
+
+                <Button Content="VALIDAR CHAVE PIX" Style="{StaticResource PremiumButtonStyle}" 
+                        Background="{StaticResource SecondaryBrush}" Foreground="Black"
+                        Height="50" Click="ActivateButton_Click"/>
+                
+                <Button Content="Voltar" Background="Transparent" Foreground="#555555" BorderThickness="0" 
+                        Margin="0,20,0,0" Click="BackButton_Click"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
