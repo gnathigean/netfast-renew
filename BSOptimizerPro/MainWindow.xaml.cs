@@ -9,7 +9,13 @@ namespace BSOptimizerPro
         private readonly int _userId;
         private readonly string _username;
         private readonly int _daysRemaining;
-        private readonly OptimizationService _optService = new OptimizationService();
+
+        // Serviços
+        private readonly NetworkService _netService = new NetworkService();
+        private readonly AudioService _audioService = new AudioService();
+        private readonly PrivacyService _privacyService = new PrivacyService();
+        private readonly GameService _gameService = new GameService();
+        private readonly SnapTapService _snapTap = new SnapTapService();
 
         public MainWindow(int userId, string username, int days)
         {
@@ -22,47 +28,83 @@ namespace BSOptimizerPro
             LicenseInfo.Text = $"VIP: {_daysRemaining} Dias restantes";
         }
 
-        private void ApplyFpsOptimization_Click(object sender, RoutedEventArgs e)
+        // --- DASHBOARD ---
+        private void QuickOptimize_Click(object sender, RoutedEventArgs e)
         {
-            StatusText.Text = "OTIMIZANDO FPS...";
-            StatusText.Foreground = System.Windows.Media.Brushes.Orange;
+            ApplyPerf_Click(null, null);
+            ApplyNetwork_Click(null, null);
+            ApplyAudio_Click(null, null);
+            ApplyPrivacy_Click(null, null);
+            GlobalStatus.Text = "OTIMIZAÇÃO ELITE APLICADA ✅";
+        }
 
-            bool success = _optService.ApplyFpsTurbo();
+        // --- PERFORMANCE ---
+        private void ApplyPerf_Click(object sender, RoutedEventArgs e)
+        {
+            if (ChkFpsTurbo.IsChecked == true) _gameService.ApplyEngineTweaks();
+            if (ChkPotato.IsChecked == true) _gameService.ApplyPotatoMode(true);
+            MessageBox.Show("Otimizações de performance e gráficos aplicadas!", "Game Boost");
+        }
 
-            if (success)
+        private void ApplyEngine_Click(object sender, RoutedEventArgs e)
+        {
+            _gameService.ApplyEngineTweaks();
+            MessageBox.Show("Tweaks de engine Unreal/Unity aplicados com sucesso.");
+        }
+
+        // --- NETWORK & AUDIO ---
+        private void ApplyNetwork_Click(object sender, RoutedEventArgs e)
+        {
+            _netService.OptimizeNetwork();
+            MessageBox.Show("DNS limpo e roteamento TCP otimizado!");
+        }
+
+        private void ApplyAudio_Click(object sender, RoutedEventArgs e)
+        {
+            _audioService.OptimizeAudio();
+            MessageBox.Show("Modo de Áudio Pro ativado!");
+        }
+
+        // --- SYSTEM & SOCD ---
+        private void ToggleSnapTap_Click(object sender, RoutedEventArgs e)
+        {
+            if (BtnSnapTap.IsChecked == true)
             {
-                StatusText.Text = "FPS OTIMIZADO ✅";
-                StatusText.Foreground = (System.Windows.Media.Brush)Application.Current.Resources["SecondaryBrush"];
-                MessageBox.Show("Otimizações de FPS aplicadas com sucesso!", "Elite Boost", MessageBoxButton.OK, MessageBoxImage.Information);
+                _snapTap.Start();
+                BtnSnapTap.Content = "ON";
             }
             else
             {
-                StatusText.Text = "ERRO NA OTIMIZAÇÃO ❌";
-                StatusText.Foreground = System.Windows.Media.Brushes.Red;
+                _snapTap.Stop();
+                BtnSnapTap.Content = "OFF";
             }
         }
 
-        private void ApplyGpuOptimization_Click(object sender, RoutedEventArgs e)
+        private void ApplyPrivacy_Click(object sender, RoutedEventArgs e)
         {
-            // Implementação direta via OptimizationService já cobre registro
-            _optService.ApplyFpsTurbo(); 
-            StatusText.Text = "GPU OTIMIZADA ✅";
-            MessageBox.Show("Prioridade de GPU definida para Máxima Performance.", "Elite Boost", MessageBoxButton.OK, MessageBoxImage.Information);
+            _privacyService.StopSpyware();
+            MessageBox.Show("Telemetria do Windows desativada.");
         }
 
-        private void ApplyCleanup_Click(object sender, RoutedEventArgs e)
+        private void ResetSystem_Click(object sender, RoutedEventArgs e)
         {
-            StatusText.Text = "LIMPANDO CACHE...";
-            _optService.CleanTempFiles();
-            StatusText.Text = "LIMPEZA CONCLUÍDA ✅";
-            MessageBox.Show("Cache do sistema e temporários removidos.", "Limpeza", MessageBoxButton.OK, MessageBoxImage.Information);
+            // Lógica de Rollback (Pode ser implementada com backup do registro)
+            MessageBox.Show("Funcionalidade de Rollback será configurada no próximo update.");
         }
 
+        // --- WINDOW CONTROLS ---
         private void Logout_Click(object sender, RoutedEventArgs e)
         {
+            _snapTap.Stop();
             LoginWindow login = new LoginWindow();
             login.Show();
             this.Close();
+        }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            _snapTap.Stop();
+            Application.Current.Shutdown();
         }
     }
 }

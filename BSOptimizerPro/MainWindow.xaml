@@ -1,7 +1,7 @@
 <Window x:Class="BSOptimizerPro.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2000/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2000/xaml"
-        Title="BS OPTIMIZER PRO | DASHBOARD" Height="600" Width="900"
+        Title="BS OPTIMIZER PRO | ELITE DASHBOARD" Height="650" Width="1000"
         WindowStartupLocation="CenterScreen" Background="{StaticResource BgBrush}"
         WindowStyle="None" AllowsTransparency="True">
     
@@ -16,69 +16,105 @@
             <Border Grid.Column="0" Background="{StaticResource CardBrush}" CornerRadius="15,0,0,15">
                 <Grid Margin="20">
                     <StackPanel>
-                        <TextBlock Text="⚡ BS PRO" FontSize="22" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,40"/>
+                        <TextBlock Text="⚡ NETFAST PRO" FontSize="20" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,40"/>
                         
-                        <Button Content="Início" Background="Transparent" Foreground="White" BorderThickness="0" HorizontalAlignment="Left" Margin="0,10"/>
-                        <Button Content="Configurações" Background="Transparent" Foreground="#555555" BorderThickness="0" HorizontalAlignment="Left" Margin="0,10"/>
-                        <Button Content="Hacks/Cheats (EM BREVE)" Background="Transparent" Foreground="#333333" BorderThickness="0" HorizontalAlignment="Left" Margin="0,10" IsEnabled="False"/>
+                        <RadioButton x:Name="TabDash" Content="Principal" Style="{StaticResource {x:Type ToggleButton}}" IsChecked="True" Foreground="White" BorderThickness="0" Background="Transparent" Margin="0,5"/>
+                        <RadioButton x:Name="TabPerf" Content="Performance" Style="{StaticResource {x:Type ToggleButton}}" Foreground="White" BorderThickness="0" Background="Transparent" Margin="0,5"/>
+                        <RadioButton x:Name="TabNet" Content="Rede &amp; Áudio" Style="{StaticResource {x:Type ToggleButton}}" Foreground="White" BorderThickness="0" Background="Transparent" Margin="0,5"/>
+                        <RadioButton x:Name="TabSys" Content="Sistema &amp; SOCD" Style="{StaticResource {x:Type ToggleButton}}" Foreground="White" BorderThickness="0" Background="Transparent" Margin="0,5"/>
                     </StackPanel>
 
                     <StackPanel VerticalAlignment="Bottom">
                         <TextBlock x:Name="UserGreet" Text="Olá, Usuário" Foreground="White" FontWeight="Bold"/>
-                        <TextBlock x:Name="LicenseInfo" Text="VIP: 30 Dias" Foreground="{StaticResource SecondaryBrush}" FontSize="12"/>
+                        <TextBlock x:Name="LicenseInfo" Text="VIP: Ativo" Foreground="{StaticResource SecondaryBrush}" FontSize="12"/>
                         <Button Content="SAIR" Foreground="#ff3a3a" Background="Transparent" BorderThickness="0" Click="Logout_Click" HorizontalAlignment="Left" Margin="0,15,0,0"/>
                     </StackPanel>
                 </Grid>
             </Border>
 
-            <!-- Main Content -->
+            <!-- Main Content Area -->
             <Grid Grid.Column="1" Margin="30">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,30">
-                    <TextBlock Text="DASHBOARD DE PERFORMANCE" FontSize="24" FontWeight="Bold" Foreground="White"/>
+                <!-- Dashboard Section -->
+                <StackPanel Visibility="{Binding IsChecked, ElementName=TabDash, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="BOAS-VINDAS À ELITE" FontSize="26" FontWeight="Bold" Foreground="White" Margin="0,0,0,20"/>
+                    <Border Background="{StaticResource CardBrush}" CornerRadius="15" Padding="20">
+                        <StackPanel>
+                            <TextBlock Text="Status do Sistema" Foreground="{StaticResource FadedTextBrush}"/>
+                            <TextBlock x:Name="GlobalStatus" Text="SISTEMA PROTEGIDO E OTIMIZADO" Foreground="{StaticResource SecondaryBrush}" FontWeight="Bold" FontSize="18" Margin="0,5"/>
+                            <Separator Background="#333" Margin="0,15"/>
+                            <Button Content="OTIMIZAÇÃO RÁPIDA (MODO ELITE)" Style="{StaticResource PremiumButtonStyle}" Click="QuickOptimize_Click"/>
+                        </StackPanel>
+                    </Border>
                 </StackPanel>
 
-                <UniformGrid Grid.Row="1" Columns="2" Rows="2">
-                    <!-- FPS Turbo Card -->
-                    <Border Margin="10" Background="{StaticResource CardBrush}" CornerRadius="15" Padding="20">
-                        <StackPanel>
-                            <TextBlock Text="🚀 FPS TURBO" FontSize="18" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}"/>
-                            <TextBlock Text="Desbloqueia FPS e otimiza .ini do jogo." Foreground="{StaticResource FadedTextBrush}" Margin="0,5,0,20" TextWrapping="Wrap"/>
-                            <Button x:Name="FpsBtn" Content="ATIVAR AGORA" Style="{StaticResource PremiumButtonStyle}" Click="ApplyFpsOptimization_Click"/>
-                        </StackPanel>
-                    </Border>
+                <!-- Performance Section -->
+                <StackPanel Visibility="{Binding IsChecked, ElementName=TabPerf, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="PERFORMANCE &amp; ENGINE" FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,20"/>
+                    <UniformGrid Columns="2">
+                        <Border Margin="5" Background="{StaticResource CardBrush}" CornerRadius="12" Padding="15">
+                            <StackPanel>
+                                <TextBlock Text="FPS Turbo" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}"/>
+                                <CheckBox x:Name="ChkFpsTurbo" Content="Desbloquear FPS" Foreground="White" IsChecked="True" Margin="0,10"/>
+                                <CheckBox x:Name="ChkPotato" Content="Modo Batata (Ultra-Low)" Foreground="White" Margin="0,5"/>
+                                <Button Content="APLICAR" Style="{StaticResource PremiumButtonStyle}" Height="30" Margin="0,10,0,0" Click="ApplyPerf_Click"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Margin="5" Background="{StaticResource CardBrush}" CornerRadius="12" Padding="15">
+                            <StackPanel>
+                                <TextBlock Text="GPU &amp; Engine" FontWeight="Bold" Foreground="{StaticResource SecondaryBrush}"/>
+                                <CheckBox x:Name="ChkGpu" Content="Priorizar GPU" Foreground="White" IsChecked="True" Margin="0,10"/>
+                                <CheckBox x:Name="ChkFso" Content="FSO Off (Input Lag)" Foreground="White" IsChecked="True" Margin="0,5"/>
+                                <Button Content="OTIMIZAR" Style="{StaticResource PremiumButtonStyle}" Height="30" Margin="0,10,0,0" Click="ApplyEngine_Click"/>
+                            </StackPanel>
+                        </Border>
+                    </UniformGrid>
+                </StackPanel>
 
-                    <!-- GPU Opt Card -->
-                    <Border Margin="10" Background="{StaticResource CardBrush}" CornerRadius="15" Padding="20">
+                <!-- Network Section -->
+                <StackPanel Visibility="{Binding IsChecked, ElementName=TabNet, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="REDE &amp; ÁUDIO COMPETITIVO" FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,20"/>
+                    <Border Background="{StaticResource CardBrush}" CornerRadius="15" Padding="20" Margin="0,0,0,20">
                         <StackPanel>
-                            <TextBlock Text="🎮 OTIMIZAR GPU" FontSize="18" FontWeight="Bold" Foreground="{StaticResource SecondaryBrush}"/>
-                            <TextBlock Text="Prioridade máxima para NVIDIA/AMD." Foreground="{StaticResource FadedTextBrush}" Margin="0,5,0,20" TextWrapping="Wrap"/>
-                            <Button x:Name="GpuBtn" Content="OTIMIZAR" Style="{StaticResource PremiumButtonStyle}" Click="ApplyGpuOptimization_Click"/>
+                            <TextBlock Text="Otimização de Latência (PING)" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}"/>
+                            <TextBlock Text="Reseta protocolos TCP/IP e DNS para garantir a melhor rota." Foreground="{StaticResource FadedTextBrush}" TextWrapping="Wrap" Margin="0,5,0,15"/>
+                            <Button Content="OTIMIZAR ROTA DE REDE" Style="{StaticResource PremiumButtonStyle}" Click="ApplyNetwork_Click"/>
                         </StackPanel>
                     </Border>
-
-                    <!-- Cleaner Card -->
-                    <Border Margin="10" Background="{StaticResource CardBrush}" CornerRadius="15" Padding="20">
+                    <Border Background="{StaticResource CardBrush}" CornerRadius="15" Padding="20">
                         <StackPanel>
-                            <TextBlock Text="🧹 LIMPEZA TOTAL" FontSize="18" FontWeight="Bold" Foreground="#facc15"/>
-                            <TextBlock Text="Remove caches e arquivos temporários." Foreground="{StaticResource FadedTextBrush}" Margin="0,5,0,20" TextWrapping="Wrap"/>
-                            <Button x:Name="CleanBtn" Content="LIMPAR SISTEMA" Style="{StaticResource PremiumButtonStyle}" Background="#facc15" Foreground="Black" Click="ApplyCleanup_Click"/>
+                            <TextBlock Text="Áudio Espacial de Baixa Latência" FontWeight="Bold" Foreground="{StaticResource SecondaryBrush}"/>
+                            <TextBlock Text="Aumenta a precisão de passos e reduz o delay do som." Foreground="{StaticResource FadedTextBrush}" TextWrapping="Wrap" Margin="0,5,0,15"/>
+                            <Button Content="ATIVAR ÁUDIO ELITE" Style="{StaticResource PremiumButtonStyle}" Click="ApplyAudio_Click"/>
                         </StackPanel>
                     </Border>
+                </StackPanel>
 
-                    <!-- Info Card -->
-                    <Border Margin="10" Background="{StaticResource CardBrush}" CornerRadius="15" Padding="20">
-                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <TextBlock Text="STATUS" Foreground="{StaticResource FadedTextBrush}"/>
-                            <TextBlock x:Name="StatusText" Text="SISTEMA PROTEGIDO" Foreground="{StaticResource SecondaryBrush}" FontWeight="Bold" FontSize="16"/>
+                <!-- System Section -->
+                <StackPanel Visibility="{Binding IsChecked, ElementName=TabSys, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="SISTEMA &amp; SNAPTAP" FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,20"/>
+                    <Border Background="{StaticResource CardBrush}" CornerRadius="15" Padding="20" Margin="0,0,0,15">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="SpaceBetween">
+                            <StackPanel Width="450">
+                                <TextBlock Text="SnapTap (SOCD)" FontWeight="Bold" Foreground="#ff3a3a"/>
+                                <TextBlock Text="Movimentação instantânea A/D. Risco de banimento." Foreground="{StaticResource FadedTextBrush}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                            <ToggleButton x:Name="BtnSnapTap" Content="OFF" Width="60" Height="30" Click="ToggleSnapTap_Click"/>
                         </StackPanel>
                     </Border>
-                </UniformGrid>
+                    <Border Background="{StaticResource CardBrush}" CornerRadius="15" Padding="20">
+                        <StackPanel>
+                            <TextBlock Text="Segurança &amp; Privacidade" FontWeight="Bold" Foreground="#facc15"/>
+                            <CheckBox x:Name="ChkTelemetry" Content="Desativar Telemetria (Anti-Spyware)" Foreground="White" IsChecked="True" Margin="0,10"/>
+                            <Button Content="APLICAR PRIVACIDADE" Style="{StaticResource PremiumButtonStyle}" Background="#facc15" Foreground="Black" Click="ApplyPrivacy_Click"/>
+                        </StackPanel>
+                    </Border>
+                    <Button Content="RESTAURAR PADRÕES DO WINDOWS (RESET TOTAL)" Background="Transparent" Foreground="#555" BorderThickness="0" Margin="0,20,0,0" Click="ResetSystem_Click"/>
+                </StackPanel>
             </Grid>
+
+            <!-- Close Button -->
+            <Button Content="✕" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" 
+                    Background="Transparent" Foreground="White" BorderThickness="0" Click="Close_Click"/>
         </Grid>
     </Border>
 </Window>
